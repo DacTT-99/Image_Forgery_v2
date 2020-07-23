@@ -11,19 +11,22 @@ from keras.callbacks import LearningRateScheduler, TensorBoard, ModelCheckpoint,
 init_lr = 0.0001
 
 def create_model_resnet50():
-    resnet = ResNet50(input_tensor = [64,64,3],weight='imagenet',include_top=False,pooling=None)
+    resnet = ResNet50(input_shape = [64,64,3],weight='imagenet',include_top=False,pooling=None)
     top_model = Sequential()
     top_model.add(resnet)
     top_model.add(Flatten())
-    top_model.add(Dense(64,activation='Relu'))
+    top_model.add(Dense(64,activation='relu'))
     top_model.add(Dropout(0.5))
     top_model.add(Dense(1,activation='sigmoid'))
 
+    for layer in model_aug.layers[0].layers[:171]:
+		layer.trainable=False
+        
     otp = Adam(init_lr)
 
     top_model.compile(optimizer=otp,
                       loss='binary_crossentropy',
-                      metrics=['accrracy'])
+                      metrics=['accuracy'])
 
     return top_model
 
@@ -32,14 +35,17 @@ def create_model_VGG16():
     top_model = Sequential()
     top_model.add(vgg)
     top_model.add(Flatten())
-    top_model.add(Dense(64,activation='Relu'))
+    top_model.add(Dense(64,activation='relu'))
     top_model.add(Dropout(0.5))
     top_model.add(Dense(1,activation='sigmoid'))
+
+    for layer in model_aug.layers[0].layers[:17]:
+		layer.trainable=False
 
     otp = Adam(init_lr)
 
     top_model.compile(optimizer=otp,
                       loss='binary_crosentropy',
-                      metrics=['accurracy'])
+                      metrics=['accuracy'])
     
     return top_model
