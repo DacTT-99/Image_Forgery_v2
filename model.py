@@ -19,8 +19,8 @@ def create_model_resnet50():
     top_model.add(Dropout(0.5))
     top_model.add(Dense(1,activation='sigmoid'))
 
-    for layer in model_aug.layers[0].layers[:171]:
-		layer.trainable=False
+    for layer in top_model.layers[0].layers[:171]:
+		    layer.trainable=False
         
     otp = Adam(init_lr)
 
@@ -39,8 +39,8 @@ def create_model_VGG16():
     top_model.add(Dropout(0.5))
     top_model.add(Dense(1,activation='sigmoid'))
 
-    for layer in model_aug.layers[0].layers[:17]:
-		layer.trainable=False
+    for layer in top_model.layers[0].layers[:17]:
+		   layer.trainable=False
 
     otp = Adam(init_lr)
 

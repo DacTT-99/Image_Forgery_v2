@@ -11,7 +11,7 @@ from model import *
 # create the dir for save model, modifi path to data
 
 init_lr = 0.0001
-batch_size = 32
+batch_size = 64
 max_epochs = 100
 path_resnet = 'tmp/top_model_resnet50'
 path_vgg = 'tmp/top_model_vgg16'
@@ -25,18 +25,14 @@ def main():
 
     top_model = create_model_resnet50()
 
-    x_train = np.load('')
-    y_train = np.load('')
+    x_train = np.load('content/x_train_resnet_bottleneck.npy')
+    y_train = np.load('content/y_train.npy')
 
-    x_valid = np.load('')
-    y_valid = np.load('')
+    x_valid = np.load('content/x_test_resnet_bottleneck.npy')
+    y_valid = np.load('content/y_test.npy')
 
     lr_scheduler = LearningRateScheduler(lr_decay)
     ckpt = ModelCheckpoint(filepath=path_resnet + '/top_model_resnet-{epoch:02d}.h5',verbose=1,save_best_only=True,period=period)
 
     callbacks = [lr_scheduler,ckpt]
     history = top_model.fit(x_train,y_train,batch_size=batch_size,epochs=max_epochs,verbose=1,callbacks=callbacks,validation_data=[x_valid,y_valid],shuffle=True)
-
-    
-
-    # continue wrirting train_resnet50(callbacks), eval.py, and try some other method

@@ -47,7 +47,7 @@ def main():
     print('sample_pristine_np : {}'.format(sample_pristine_np.shape))
     np.save('sample_pristine.npy', sample_pristine_np)
 
-    sample_fake_np = np.load('/content/sample_fake1.npy')
+    sample_fake_np = np.load('/content/sample_fake.npy')
 
     # 20% for valid , 80% for train
     train_fake = sample_fake_np.shape[0] * 4 // 5

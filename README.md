@@ -1,0 +1,2 @@
+Modifi file path to run sample_fake_imagey.py and split_train_test.py 
+Fine turn top_model and keep freezing base model, after model converged, will unfreez base model and train with very small learning rate
