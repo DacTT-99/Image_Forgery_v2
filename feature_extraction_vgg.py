@@ -6,8 +6,8 @@ import numpy as np
 def main():
     model = applications.VGG16(weights='imagenet', include_top=False)
 
-    x_train=np.load('content/x_train.npy')
-    x_test=np.load('content/x_test.npy')
+    x_train=np.load('/content/x_train.npy')
+    x_test=np.load('/content/x_test.npy')
 
     x_train_bottleneck = model.predict(x_train)
     x_test_bottleneck = model.predict(x_test)

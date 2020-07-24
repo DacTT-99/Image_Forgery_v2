@@ -11,7 +11,7 @@ from keras.callbacks import LearningRateScheduler, TensorBoard, ModelCheckpoint,
 init_lr = 0.0001
 
 def create_model_resnet50():
-    resnet = ResNet50(input_shape = [64,64,3],weight='imagenet',include_top=False,pooling=None)
+    resnet = ResNet50(input_shape = [64,64,3],weights='imagenet',include_top=False,pooling=None)
     top_model = Sequential()
     top_model.add(resnet)
     top_model.add(Flatten())
