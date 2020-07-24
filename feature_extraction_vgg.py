@@ -12,8 +12,8 @@ def main():
     x_train_bottleneck = model.predict(x_train)
     x_test_bottleneck = model.predict(x_test)
 
-    np.save('x_train_bottleneck.npy', x_train_bottleneck)
-    np.save('x_test_bottleneck.npy', x_test_bottleneck)
+    np.save('x_train_vgg_bottleneck.npy', x_train_bottleneck)
+    np.save('x_test_vgg_bottleneck.npy', x_test_bottleneck)
 
     print(x_train_bottleneck.shape)
 

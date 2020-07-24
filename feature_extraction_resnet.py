@@ -4,9 +4,9 @@ import numpy as np
 
 def main():
     model = applications.resnet50.ResNet50(include_top=False, weights='imagenet')
-
-    x_train=np.load('train_data/x_train.npy')
-    x_cv=np.load('train_data/x_cv.npy')
+    
+    x_train=np.load('')
+    x_cv=np.load('')
 
     x_train_bottleneck = model.predict(x_train)
     x_test_bottleneck = model.predict(x_cv)
