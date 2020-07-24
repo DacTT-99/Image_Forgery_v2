@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+from  sklearn.model_selection import train_test_split
 from sample_fake_image import *
 
 
@@ -36,40 +37,48 @@ def sample_random(img, num_samples):
 
 def main():
     fns = get_image(pristine_path)
-    sample_pristine = []
-    for fn in fns:
+    fns_train,fns_test=train_test_split(fns,test_size=0.2,stratify=fns)
+
+    x_pristine_train = []
+    x_pristine_test = []
+
+    for fn in fns_train:
         img = cv2.imread(fn + '.png')
         for s in sample_random(img,samples_per_img):
-            sample_pristine.append(s)
+            x_pristine_train.append(s)
 
-    sample_pristine_np = np.array(sample_pristine)
+    for fn in fns_test:
+        img = cv2.imread(fn + '.png')
+        for s in sample_random(img,samples_per_img):
+            x_pristine_test.append(s)
 
-    print('sample_pristine_np : {}'.format(sample_pristine_np.shape))
-    np.save('sample_pristine.npy', sample_pristine_np)
+    x_pristine_train = np.array(x_pristine_train)
+    x_pristine_test = np.array(x_pristine_test)
+    y_pristine_train = np.array([1]*x_pristine_train.shape[0])
+    y_pristine_test = np.array([1]*x_pristine_test.shape[0])
 
-    sample_fake_np = np.load('/content/sample_fake.npy')
+    np.save('x_pristine_train.npy', x_pristine_train)
+    np.save('x_pristine_test.npy', x_pristine_test)
+    np.save('y_pristine_train.npy', y_pristine_train)
+    np.save('y_pristine_test.npy', y_pristine_test)
 
-    # 20% for valid , 80% for train
-    train_fake = sample_fake_np.shape[0] * 4 // 5
-    test_fake = sample_fake_np.shape[0] - train_fake
-    x_train_fake = sample_fake_np[:train_fake, :, :, :]
-    x_test_fake = sample_fake_np[train_fake:, :, :, :]
+    x_fake_train = np.load('/content/x_fake_train.npy')
+    x_fake_test = np.load('/content/x_fake_test.npy')
+    y_fake_train = np.load('/content/y_fake_train.npy')
+    y_fake_test = np.load('/content/y_fake_test.npy')
 
-    # 20% for valid , 80% for train
-    train_pristine = sample_pristine_np.shape[0] * 4 // 5
-    test_pristine = sample_pristine_np.shape[0] - train_pristine
-    x_train_pristine = sample_pristine_np[:train_pristine, :, :, :]
-    x_test_pristine = sample_pristine_np[train_pristine:, :, :, :]
+    print('Train data : {} pristine samples + {} fake samples').format(y_pristine_train.shape[0],y_fake_train.shape[0])
+    print('Validation data : {} pristine samples + {} fake samples').format(y_pristine_test.shape[0],y_fake_test.shape[0])
 
-    x_train = np.concatenate((x_train_fake, x_train_pristine), axis=0)
-    x_test = np.concatenate((x_test_fake, x_test_pristine), axis=0)
-    y_train = np.array([0] * train_fake + [1] * train_pristine)
-    y_test = np.array([0] * test_fake + [1] * test_pristine)
+    x_train_data = np.concatenate((x_pristine_train,x_fake_train),axis=0)
+    x_test_data = np.concatenate((x_pristine_test,x_fake_test),axis=0)
+    y_train_data = np.concatenate((y_pristine_train,y_fake_train),axis=0)
+    y_test_data = np.concatenate((y_pristine_test,y_fake_test),axis=0)
 
-    np.save('x_train.npy',x_train)
-    np.save('x_test.npy',x_test)
-    np.save('y_train.npy',y_train)
-    np.save('y_test.npy',y_test)
+    np.save('x_train_data.npy',x_train_data)
+    np.save('x_test_data.npy',x_test_data)
+    np.save('y_train_data.npy',y_train_data)
+    np.save('y_test_data.npy',y_test_data)
 
 if __name__ == '__main__':
     main()

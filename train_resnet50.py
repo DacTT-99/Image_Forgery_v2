@@ -13,7 +13,7 @@ from model import *
 
 
 def lr_decay(epoch):
-    return init_lr / (epoch ** 0.5)
+    return init_lr / ((epoch +1)** 0.5)
 
 def main():
 

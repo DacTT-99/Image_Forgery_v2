@@ -45,7 +45,7 @@ def create_model_VGG16():
     otp = Adam(init_lr)
 
     top_model.compile(optimizer=otp,
-                      loss='binary_crosentropy',
+                      loss='binary_crossentropy',
                       metrics=['accuracy'])
     
     return top_model

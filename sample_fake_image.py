@@ -1,7 +1,7 @@
 import numpy as np
 import os
 import cv2
-
+from sklearn.model_selection import train_test_split
 fake_path = '/content/dataset-dist/phase-01/training/fake'
 pristine_path = '/content/dataset-dist/phase-01/training/pristine'
 
@@ -45,19 +45,36 @@ def main():
     fns = get_image(fake_path)
     x_train_mask = []
     x_train_fake_images = []
-    samples_fake = []
+    x_fake_train = []
+    x_fake_test = []   
 
-    for fn in fns :
+    fns_train ,fns_test=train_test_split(fns,test_size=0.2,stratify=fns)
+
+    for fn in fns_train :
         img = cv2.imread(fn + '.png')
         mask = cv2.imread(fn + '.mask.png')
         for s in sample_fake(img,mask):
-            samples_fake.append(s)
+            x_fake_train.append(s)
 
-    samples_fake_np = np.array(samples_fake)
+    for fn in fns_test :
+        img = cv2.imread(fn + '.png')
+        mask = cv2.imread(fn + '.mask.png')
+        for s in sample_fake(img,mask):
+            x_fake_test.append(s)
+    
+    x_fake_train = np.array(x_fake_train)
+    x_fake_test = np.array(x_fake_test)
 
-    print(samples_fake_np.shape)
+    y_fake_train = np.array([0]*x_fake_train.shape[0])
+    y_fake_test = np.array([0]*x_fake_test.shape[0])
+
+    #print(samples_fake_np.shape)
     print('done')
-    np.save('sample_fake.npy',samples_fake_np)
+
+    np.save('x_fake_train.npy',x_fake_train)
+    np.save('x_fake_test.npy',x_fake_test)
+    np.save('y_fake_train.npy',y_fake_train)
+    np.save('y_fake_test.npy',y_fake_test)
 
 if __name__ == '__main__':
     main()
