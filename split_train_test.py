@@ -37,7 +37,8 @@ def sample_random(img, num_samples):
 
 def main():
     fns = get_image(pristine_path)
-    fns_train,fns_test=train_test_split(fns,test_size=0.2,stratify=fns)
+    y = np.array([0]*len(fns))
+    fns_train,fns_test,_,_=train_test_split(fns,y,test_size=0.2,stratify=fns)
 
     x_pristine_train = []
     x_pristine_test = []
@@ -67,8 +68,8 @@ def main():
     y_fake_train = np.load('/content/y_fake_train.npy')
     y_fake_test = np.load('/content/y_fake_test.npy')
 
-    print('Train data : {} pristine samples + {} fake samples').format(y_pristine_train.shape[0],y_fake_train.shape[0])
-    print('Validation data : {} pristine samples + {} fake samples').format(y_pristine_test.shape[0],y_fake_test.shape[0])
+    print('Train data : {} pristine samples + {} fake samples'.format(y_pristine_train.shape[0],y_fake_train.shape[0]))
+    print('Validation data : {} pristine samples + {} fake samples'.format(y_pristine_test.shape[0],y_fake_test.shape[0]))
 
     x_train_data = np.concatenate((x_pristine_train,x_fake_train),axis=0)
     x_test_data = np.concatenate((x_pristine_test,x_fake_test),axis=0)
