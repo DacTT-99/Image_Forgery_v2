@@ -54,7 +54,7 @@ def main():
     x_fake_test = []
 
     y = np.array([0]*len(fns))
-    fns_train ,fns_test,_,_=train_test_split(fns,y,test_size=0.2,stratify=fns)
+    fns_train ,fns_test,_,_=train_test_split(fns,y,test_size=0.2,stratify=y)
 
     for fn in fns_train:
         img = cv2.imread(fn + '.png')
